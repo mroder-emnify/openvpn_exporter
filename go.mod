@@ -3,7 +3,7 @@ module github.com/patrickjahns/openvpn_exporter
 go 1.26.0
 
 require (
-	github.com/go-kit/kit v0.13.0
+	github.com/go-kit/log v0.2.1
 	github.com/prometheus/client_golang v1.25.0
 	github.com/urfave/cli/v2 v2.27.7
 )
@@ -12,7 +12,6 @@ require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
-	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.6.1 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/prometheus/client_model v0.6.3 // indirect

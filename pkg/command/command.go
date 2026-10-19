@@ -5,9 +5,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/go-kit/kit/log"
-	"github.com/go-kit/kit/log/level"
+	"github.com/go-kit/log"
+	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/urfave/cli/v2"
 
@@ -121,8 +122,8 @@ func run(cfg *config.Config) error {
 	r := prometheus.NewRegistry()
 	if cfg.ExportGoMetrics {
 		// enable profiler
-		r.MustRegister(prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{}))
-		r.MustRegister(prometheus.NewGoCollector())
+		r.MustRegister(collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}))
+		r.MustRegister(collectors.NewGoCollector())
 	}
 	r.MustRegister(collector.NewGeneralCollector(
 		logger,
