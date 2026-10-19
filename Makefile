@@ -27,6 +27,13 @@ ifndef REVISION
 	REVISION ?= $(shell git rev-parse --short HEAD)
 endif
 
+RELEASE_OSARCH ?= darwin/amd64 darwin/arm64 \
+	freebsd/386 freebsd/amd64 freebsd/arm \
+	linux/386 linux/amd64 linux/arm linux/arm64 \
+	netbsd/386 netbsd/amd64 netbsd/arm \
+	openbsd/386 openbsd/amd64 \
+	windows/386 windows/amd64
+
 LDFLAGS += -s -w
 LDFLAGS += -X "$(IMPORT)/pkg/version.Version=$(VERSION)"
 LDFLAGS += -X "$(IMPORT)/pkg/version.BuildDate=$(DATE)"
@@ -89,7 +96,7 @@ release-build:
 	@which gox > /dev/null; if [ $$? -ne 0 ]; then \
 		GO111MODULE=off  $(GO) get -u github.com/mitchellh/gox; \
 	fi
-	gox -arch="386 amd64 arm" -osarch '!darwin/386' -verbose -ldflags '-w $(LDFLAGS)' -output="$(DIST)/$(EXECUTABLE)-{{.OS}}-{{.Arch}}" ./cmd/$(NAME)
+	gox -osarch="$(RELEASE_OSARCH)" -verbose -ldflags '-w $(LDFLAGS)' -output="$(DIST)/$(EXECUTABLE)-{{.OS}}-{{.Arch}}" ./cmd/$(NAME)
 
 .PHONY: release-checksums
 release-checksums:
