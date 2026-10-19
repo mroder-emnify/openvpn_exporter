@@ -66,16 +66,13 @@ lint:
 
 .PHONY: test
 test:
-	@which goverage > /dev/null; if [ $$? -ne 0 ]; then \
-		GO111MODULE=off $(GO) get -u github.com/haya14busa/goverage; \
-	fi
-	goverage -v -coverprofile coverage.out $(PACKAGES)
+	$(GO) test -v -coverprofile coverage.out $(PACKAGES)
 
 .PHONY: build
 build: $(BIN)/$(EXECUTABLE)
 
 $(BIN)/$(EXECUTABLE): $(SOURCES)
-	$(GO) build -i -v -tags '$(TAGS)' -ldflags '$(LDFLAGS)' -o $@ ./cmd/$(NAME)
+	$(GO) build -v -tags '$(TAGS)' -ldflags '$(LDFLAGS)' -o $@ ./cmd/$(NAME)
 
 .PHONY: release
 release: release-dirs release-build release-checksums
@@ -87,7 +84,7 @@ release-dirs:
 .PHONY: release-build
 release-build:
 	@which gox > /dev/null; if [ $$? -ne 0 ]; then \
-		GO111MODULE=off  $(GO) get -u github.com/mitchellh/gox; \
+		$(GO) install github.com/mitchellh/gox@v1.0.1; \
 	fi
 	gox -arch="386 amd64 arm" -osarch '!darwin/386' -verbose -ldflags '-w $(LDFLAGS)' -output="$(DIST)/$(EXECUTABLE)-{{.OS}}-{{.Arch}}" ./cmd/$(NAME)
 
